@@ -1,3 +1,3 @@
-# stbar
+# stba
 
-A [storeBackup](http://storebackup.org/) runner.
+A [storeBackup](http://storebackup.org/) startup script.
