@@ -1,6 +1,6 @@
-# stbar
+# stba
 
-A [storeBackup](http://storebackup.org/) runner.
+A startup script for [STtoreBAckup (by: Heinz-Josef Claes)](http://storebackup.org/).
 
 Copyright 2016 Willem Oosting
 
@@ -16,4 +16,3 @@ Copyright 2016 Willem Oosting
 >
 >You should have received a copy of the GNU General Public License
 >along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
