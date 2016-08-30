@@ -1,6 +1,7 @@
 # stba
 
-A startup script for [STtoreBAckup (by: Heinz-Josef Claes)](http://storebackup.org/).
+A STart BAckup script for [StoreBackup](http://storebackup.org/) (a remarkable
+GNU backup program written by: Heinz-Josef Claes.
 
 Copyright 2016 Willem Oosting
 
