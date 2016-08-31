@@ -1,8 +1,10 @@
 #! /bin/bash
+# # STart BAckup
 #
-# # STBA (SToreBAckup)
+# A startup script for [StoreBackup](http://storebackup.org/) (a remarkable
+# GNU backup program written by: Heinz-Josef Claes).
 #
-# A [storeBackup](http://storebackup.org/) startup script.
+# ---
 #
 # Copyright 2016 Willem Oosting
 #
