@@ -24,26 +24,15 @@
 
 # CONFIGURATION
 
-  SOURCEDIR="${HOME}/.storeBackup/sources"
   TARGETDIR="${HOME}/.storeBackup/target/link2target"  # Assuming the target dir contains a link ("link2target") to point to the real target.
+  SOURCEDIR="${HOME}/.storeBackup/sources"
   LINKS2SOURCES="y"                                    # Assuming the sources dir contains links to point to the (possibly various) sources.
-# >>> NOTE: THE AFOREMENTIONED SETTINGS OVERRULE THEIR EQUIVALENTS IN A SUPPLIED CONFIGURATION! <<<
-  CONFIGFILE="${HOME}/.storeBackup/storeBackup.cfg"    # Rest is taken from the config file if supplied (otherwise storeBackup configs are used).
+# ^^^ NOTE: THE AFOREMENTIONED SETTINGS OVERRULE THEIR EQUIVALENTS IN A SUPPLIED CONFIGURATION! vvv
+  CONFIGFILE="${HOME}/.storeBackup/storeBackup.cfg"    # Rest is taken from the config file, if supplied (otherwise storeBackup configs are used).
 
 
 # INITIALISATION
 
-  while getopts s:t:l:c: option; do  #CL-INTAKE (flagged arguments)
-    case "${option}"
-     in
-       s) SOURCEDIR=(${OPTARG});;
-       t) TARGETDIR=(${OPTARG});;
-       l) LINKS2SOURCES=(${OPTARG});;
-       c) CONFIGFILE=(${OPTARG});;
-       *) 
-          echo -e "Usage: [-c /path/configfile] [-s /path/sourcedir] [-t /path/targetdir] [-l n|y|Y|yes|Yes|YES]."
-    esac
-  done
   if [ "${LINKS2SOURCES}" == "y" ] || [ "${LINKS2SOURCES}" == "Y" ] || [ "${LINKS2SOURCES}" == "yes" ] || [ "${LINKS2SOURCES}" == "Yes" ] || [ "${LINKS2SOURCES}" == "YES" ] ; then
     L2SSUPPL="/*"
     L2SDEPTH="--followLinks 1"
@@ -55,6 +44,5 @@
 
 # EXECUTION
 
-  dire ${SOURCEDIR}${L2SSUPPL} ${TARGETDIR} && \
-  dirp ${SOURCEDIR}${L2SSUPPL} ${TARGETDIR} && \
+  dirp -v -e -r "${SOURCEDIR}${L2SSUPPL}" -w "${TARGETDIR}" && \
   echo -e "storeBackup.pl --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} ${L2SDEPTH} -f ${CONFIGFILE}"
