@@ -1,7 +1,7 @@
 #! /bin/bash
 # # STart BAckup
 #
-# A startup script for [StoreBackup](http://storebackup.org/) (the temarkable
+# A startup script for [StoreBackup](http://storebackup.org/) (the remarkable
 # GNU backup program written by: Heinz-Josef Claes).
 #
 # Copyright 2016 Willem Oosting
@@ -24,8 +24,8 @@
 
 # CONFIGURATION
 
-  TARGETDIR="${HOME}/.storeBackup/target/link2target"  # Assuming the target dir contains a link ("link2target") to point to the real target.
-  SOURCEDIR="${HOME}/.storeBackup/sources"
+  TARGETDIR="${HOME}/.storeBackup/target/target.nl"    # Assuming the target dir contains a symbolic link, "target.ln", that points to the real target directory.
+  SOURCEDIR="${HOME}/.storeBackup/sources"             # Assuming the sources dir countains symbolic links that point to the real sources directories.
   LINKS2SOURCES="y"                                    # Assuming the sources dir contains links to point to the (possibly various) sources.
 # ^^^ NOTE: THE AFOREMENTIONED SETTINGS OVERRULE THEIR EQUIVALENTS IN A SUPPLIED CONFIGURATION! vvv
   CONFIGFILE="${HOME}/.storeBackup/storeBackup.cfg"    # Rest is taken from the config file, if supplied (otherwise storeBackup configs are used).
@@ -45,4 +45,4 @@
 # EXECUTION
 
   dirp -v -e -r "${SOURCEDIR}${L2SSUPPL}" -w "${TARGETDIR}" && \
-  echo -e "storeBackup.pl --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} ${L2SDEPTH} -f ${CONFIGFILE}"
+  storeBackup.pl --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} ${L2SDEPTH} -f ${CONFIGFILE}
