@@ -21,10 +21,9 @@
 #
 # FORK ME AT GITHUB: https://github.com/woosting/stba
 
-
 # CONFIGURATION
 
-  TARGETDIR="${HOME}/.storeBackup/target/target.nl"    # Assuming the target dir contains a symbolic link, "target.ln", that points to the real target directory.
+  TARGETDIR="${HOME}/.storeBackup/target/target.ln"    # Assuming the target dir contains a symbolic link, "target.ln", that points to the real target directory.
   SOURCEDIR="${HOME}/.storeBackup/sources"             # Assuming the sources dir countains symbolic links that point to the real sources directories.
   LINKS2SOURCES="y"                                    # Assuming the sources dir contains links to point to the (possibly various) sources.
 # ^^^ NOTE: THE AFOREMENTIONED SETTINGS OVERRULE THEIR EQUIVALENTS IN A SUPPLIED CONFIGURATION! vvv
