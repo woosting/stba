@@ -21,6 +21,7 @@
 #
 # FORK ME AT GITHUB: https://github.com/woosting/stba
 
+
 # CONFIGURATION
 
   TARGETDIR="${HOME}/.storeBackup/target/target.ln"    # Assuming the target dir contains a symbolic link, "target.ln", that points to the real target directory.
@@ -31,6 +32,7 @@
 
 
 # INITIALISATION
+  PATH=${PATH}:/usr/local/bin
 
   if [ "${LINKS2SOURCES}" == "y" ] || [ "${LINKS2SOURCES}" == "Y" ] || [ "${LINKS2SOURCES}" == "yes" ] || [ "${LINKS2SOURCES}" == "Yes" ] || [ "${LINKS2SOURCES}" == "YES" ] ; then
     L2SSUPPL="/*"
