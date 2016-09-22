@@ -24,15 +24,28 @@
 
 # CONFIGURATION
 
-  TARGETDIR="${HOME}/.storeBackup/target/target.ln"    # Assuming the target dir contains a symbolic link, "target.ln", that points to the real target directory.
   SOURCEDIR="${HOME}/.storeBackup/sources"             # Assuming the sources dir countains symbolic links that point to the real sources directories.
   LINKS2SOURCES="y"                                    # Assuming the sources dir contains links to point to the (possibly various) sources.
+  TARGETDIR="${HOME}/.storeBackup/target/target.ln"    # Assuming the target dir contains a symbolic link, "target.ln", that points to the real target directory.
 # ^^^ NOTE: THE AFOREMENTIONED SETTINGS OVERRULE THEIR EQUIVALENTS IN A SUPPLIED CONFIGURATION! vvv
   CONFIGFILE="${HOME}/.storeBackup/storeBackup.cfg"    # Rest is taken from the config file, if supplied (otherwise storeBackup configs are used).
 
 
 # INITIALISATION
+
   PATH=${PATH}:/usr/local/bin
+
+  while getopts s:l:t:c: option
+  do
+    case "${option}"
+     in
+       s) SOURCEDIR=${OPTARG};;
+       l) LINK2SOURCES=${OPTARG};;
+       t) TARGETDIR=${OPTARG};;
+       c) CONFIGFILE=${OPTARG};;
+       *) echo -e "Usage: [-s \"/path/sourcedir\"] [-l y|n ] [-t \"/path/target\"] [-c \"/path/configfile\"]\nUsing (some) defaults instead."
+    esac
+  done
 
   if [ "${LINKS2SOURCES}" == "y" ] || [ "${LINKS2SOURCES}" == "Y" ] || [ "${LINKS2SOURCES}" == "yes" ] || [ "${LINKS2SOURCES}" == "Yes" ] || [ "${LINKS2SOURCES}" == "YES" ] ; then
     L2SSUPPL="/*"
