@@ -1,7 +1,7 @@
 #! /bin/bash
 # # STart BAckup
 #
-# A startup script for [StoreBackup](http://storebackup.org/) (a remarkable
+# A startup script for [StoreBackup](http://storebackup.org/) (the remarkable
 # GNU backup program written by: Heinz-Josef Claes).
 #
 # Copyright 2016 Willem Oosting
@@ -24,31 +24,26 @@
 
 # CONFIGURATION
 
-  CONFIGFILE="${HOME}/.storeBackup/storeBackup.cfg"
-  SOURCEDIR="${HOME}/.storeBackup/sources"
-  TARGETDIR="${HOME}/.storeBackup/target"
-  LINK2DIR="y"
+  TARGETDIR="${HOME}/.storeBackup/target/target.ln"    # Assuming the target dir contains a symbolic link, "target.ln", that points to the real target directory.
+  SOURCEDIR="${HOME}/.storeBackup/sources"             # Assuming the sources dir countains symbolic links that point to the real sources directories.
+  LINKS2SOURCES="y"                                    # Assuming the sources dir contains links to point to the (possibly various) sources.
+# ^^^ NOTE: THE AFOREMENTIONED SETTINGS OVERRULE THEIR EQUIVALENTS IN A SUPPLIED CONFIGURATION! vvv
+  CONFIGFILE="${HOME}/.storeBackup/storeBackup.cfg"    # Rest is taken from the config file, if supplied (otherwise storeBackup configs are used).
 
 
 # INITIALISATION
+  PATH=${PATH}:/usr/local/bin
 
-  while getopts c:s:t:l: option; do  #CL-INTAKE (flagged arguments)
-    case "${option}"
-     in
-       c) CONFIGFILE=(${OPTARG});;
-       s) SOURCEDIR=(${OPTARG});;
-       t) TARGETDIR=(${OPTARG});;
-       l) LINK2DIR=(${OPTARG});;
-       *) echo -e "Usage: [-c /path/configfile] [-s /path/sourcedir] [-t /path/targetdir] [-l y|n]."
-    esac
-  done
-  if [ "${LINK2DIR}" == "y" ] || [ "${LINK2DIR}" == "Y" ]; then
-    SUPPLEMENT="/*"
+  if [ "${LINKS2SOURCES}" == "y" ] || [ "${LINKS2SOURCES}" == "Y" ] || [ "${LINKS2SOURCES}" == "yes" ] || [ "${LINKS2SOURCES}" == "Yes" ] || [ "${LINKS2SOURCES}" == "YES" ] ; then
+    L2SSUPPL="/*"
+    L2SDEPTH="--followLinks 1"
+  else
+    L2SSUPPL=""
+    L2SDEPTH="--followLinks 0"
   fi
 
 
 # EXECUTION
 
-  dire ${SOURCEDIR}${SUPPLEMENT} ${TARGETDIR} && \
-  dirp ${SOURCEDIR}${SUPPLEMENT} ${TARGETDIR} && \
-  storeBackup.pl --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} -f ${CONFIGFILE}
+  dirp -v -e -r "${SOURCEDIR}${L2SSUPPL}" -w "${TARGETDIR}" && \
+  storeBackup.pl --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} ${L2SDEPTH} -f ${CONFIGFILE}
