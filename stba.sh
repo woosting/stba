@@ -24,18 +24,31 @@
 
 # CONFIGURATION
 
-  SOURCEDIR="${HOME}/.storeBackup/sources"             # Assuming the sources dir countains symbolic links that point to the real sources directories.
-  LINKS2SOURCES="y"                                    # Assuming the sources dir contains links to point to the (possibly various) sources.
-  TARGETDIR="${HOME}/.storeBackup/target/target.ln"    # Assuming the target dir contains a symbolic link, "target.ln", that points to the real target directory.
+  SOURCEDIR="${HOME}/storeBackup/sources"          # Assuming the sources dir countains symbolic links that point to the real sources directories.
+  LINKS2SOURCES="y"                                # Assuming the sources dir contains links to point to the (possibly various) sources.
+  TARGETDIR="${HOME}/storeBackup/target/target"    # Assuming the target dir contains a symbolic link, "target", that points to the real target directory.
 # ^^^ NOTE: THE AFOREMENTIONED SETTINGS OVERRULE THEIR EQUIVALENTS IN A SUPPLIED CONFIGURATION! vvv
-  CONFIGFILE="${HOME}/.storeBackup/storeBackup.cfg"    # Rest is taken from the config file, if supplied (otherwise storeBackup configs are used).
+  CONFIGFILE="${HOME}/storeBackup/storeBackup.cfg" # Rest is taken from the config file, if supplied (otherwise storeBackup configs are used).
+
+
+# FUNCTION DEFINITION
+  function printHelp () {
+    echo -e "STBA - STart BAckup (2016, GNU GENERAL PUBLIC LICENSE)\n"
+    echo -e "USAGE: stba [[-s \"/path/sourcedir\"] [-l y|n ] [-t \"/path/target\"] [-c \"/path/configfile\"]] | [-h]\n"
+    echo -e "Arguments:"
+    echo -e "   -s Overrides the default source directory (${SOURCEDIR})."
+    echo -e "   -l Overrides link-following (${LINKS2SOURCES})."
+    echo -e "   -t Overrides the default target directory (${TARGETDIR})."
+    echo -e "   -c Overrides the default config file (${CONFIGFILE})."
+    echo -e "   -h Prints this helptext."
+  }
 
 
 # INITIALISATION
 
   PATH=${PATH}:/usr/local/bin
 
-  while getopts s:l:t:c: option
+  while getopts s:l:t:c:h option
   do
     case "${option}"
      in
@@ -43,7 +56,14 @@
        l) LINK2SOURCES=${OPTARG};;
        t) TARGETDIR=${OPTARG};;
        c) CONFIGFILE=${OPTARG};;
-       *) echo -e "Usage: [-s \"/path/sourcedir\"] [-l y|n ] [-t \"/path/target\"] [-c \"/path/configfile\"]\nUsing (some) defaults instead."
+       h)
+          printHelp
+          exit 0
+       ;;
+       \?)
+          printHelp
+          exit 1
+       ;;
     esac
   done
 
@@ -59,4 +79,4 @@
 # EXECUTION
 
   dirp -v -e -r "${SOURCEDIR}${L2SSUPPL}" -w "${TARGETDIR}" && \
-  storeBackup.pl --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} ${L2SDEPTH} -f ${CONFIGFILE}
+  storeBackup --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} ${L2SDEPTH} -f ${CONFIGFILE}
