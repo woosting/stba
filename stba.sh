@@ -27,7 +27,7 @@
   SOURCEDIR="${HOME}/storeBackup/sources"          # Assuming the sources dir countains symbolic links that point to the real sources directories.
   LINKS2SOURCES="y"                                # Assuming the sources dir contains links to point to the (possibly various) sources.
   TARGETDIR="${HOME}/storeBackup/target/target"    # Assuming the target dir contains a symbolic link, "target", that points to the real target directory.
-  DELAY="n"
+  DELAY="n"                                        # Assuming everything should be executed in one go.
 # ^^^ NOTE: THE AFOREMENTIONED SETTINGS OVERRULE THEIR EQUIVALENTS IN A SUPPLIED CONFIGURATION! vvv
   CONFIGFILE="${HOME}/storeBackup/storeBackup.cfg" # Rest is taken from the config file, if supplied (otherwise storeBackup configs are used).
 
