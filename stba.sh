@@ -27,6 +27,7 @@
   SOURCEDIR="${HOME}/storeBackup/sources"          # Assuming the sources dir countains symbolic links that point to the real sources directories.
   LINKS2SOURCES="y"                                # Assuming the sources dir contains links to point to the (possibly various) sources.
   TARGETDIR="${HOME}/storeBackup/target/target"    # Assuming the target dir contains a symbolic link, "target", that points to the real target directory.
+  DELAY="n"                                        # Assuming everything should be executed in one go.
 # ^^^ NOTE: THE AFOREMENTIONED SETTINGS OVERRULE THEIR EQUIVALENTS IN A SUPPLIED CONFIGURATION! vvv
   CONFIGFILE="${HOME}/storeBackup/storeBackup.cfg" # Rest is taken from the config file, if supplied (otherwise storeBackup configs are used).
 
@@ -34,13 +35,14 @@
 # FUNCTION DEFINITION
   function printHelp () {
     echo -e "STBA - STart BAckup (2016, GNU GENERAL PUBLIC LICENSE)\n"
-    echo -e "USAGE: stba [[-s \"/path/sourcedir\"] [-l y|n ] [-t \"/path/target\"] [-c \"/path/configfile\"]] | [-h]\n"
+    echo -e "USAGE: stba [[-s \"/path/sourcedir\"] [-l y|n ] [-t \"/path/target\"] [-c \"/path/configfile\"] [-d] ] | [-h]\n"
     echo -e "Arguments:"
-    echo -e "   -s Overrides the default source directory (${SOURCEDIR})."
-    echo -e "   -l Overrides link-following (${LINKS2SOURCES})."
-    echo -e "   -t Overrides the default target directory (${TARGETDIR})."
-    echo -e "   -c Overrides the default config file (${CONFIGFILE})."
-    echo -e "   -h Prints this helptext."
+    echo -e "   -s (source) Overrides the default source directory (${SOURCEDIR})."
+    echo -e "   -l (links)  Overrides the default followLinks (${LINKS2SOURCES})."
+    echo -e "   -t (target) Overrides the default target directory (${TARGETDIR})."
+    echo -e "   -c (config) Overrides the default config file (${CONFIGFILE})."
+    echo -e "   -d (delay)  Overrides both lateLinks and lateCompress set in (${CONFIGFILE})."
+    echo -e "   -h (help)   Prints this helptext."
   }
 
 
@@ -48,7 +50,7 @@
 
   PATH=${PATH}:/usr/local/bin
 
-  while getopts s:l:t:c:h option
+  while getopts s:l:t:c:dh option
   do
     case "${option}"
      in
@@ -56,6 +58,7 @@
        l) LINK2SOURCES=${OPTARG};;
        t) TARGETDIR=${OPTARG};;
        c) CONFIGFILE=${OPTARG};;
+       d) DELAY="y";;
        h)
           printHelp
           exit 0
@@ -75,8 +78,13 @@
     L2SDEPTH="--followLinks 0"
   fi
 
+  if [ "${DELAY}" = "y" ]; then
+    DELAY="--lateLinks --lateCompress"
+  else
+    DELAY=""
+  fi
 
 # EXECUTION
 
-  dirp -v -e -r "${SOURCEDIR}${L2SSUPPL}" -w "${TARGETDIR}" && \
-  storeBackup --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} ${L2SDEPTH} -f ${CONFIGFILE}
+dirp -v -e -r "${SOURCEDIR}${L2SSUPPL}" -w "${TARGETDIR}" && \
+storeBackup --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} ${L2SDEPTH} ${DELAY} -f ${CONFIGFILE}
