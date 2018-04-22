@@ -88,3 +88,11 @@
 
 dirp -v -e -r "${SOURCEDIR}${L2SSUPPL}" -w "${TARGETDIR}" && \
 storeBackup --sourceDir ${SOURCEDIR} --backupDir ${TARGETDIR} ${L2SDEPTH} ${DELAY} -f ${CONFIGFILE}
+
+rc=$?;
+if [[ $rc != 0 ]]; then
+    echo -e "\nERRORS"
+    exit 1
+else
+    echo -e "\nCOMPLETED"
+fi
